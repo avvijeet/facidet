@@ -1,24 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.database = void 0;
-const database = {
-    users: [
-        {
-            id: 1234,
-            name: "Joey",
-            email: "joey@gmail.com",
-            password: "$2b$10$L9//zMwD1UXnjHBhsl7uqeMhcfsPVurlHHeFXd9QyTLUdoEfkRz5O",
-            entries: 0,
-            joined: new Date(),
-        },
-        {
-            id: 1235,
-            name: "Jenny",
-            email: "jenny@yahoo.com",
-            password: "$2b$10$kJsLenudVAtu0jYAM3NkHeRkBGOr0bxXezKmCeP8MrB/td8fUG9.e",
-            entries: 0,
-            joined: new Date(),
-        },
-    ],
-};
+const knex_1 = __importDefault(require("knex"));
+const database = knex_1.default({
+    client: 'pg',
+    connection: {
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'facidet'
+    }
+});
 exports.database = database;

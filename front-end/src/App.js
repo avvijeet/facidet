@@ -160,7 +160,7 @@ class App extends Component {
       default:
         return (
           <div>
-            <SignIn onRouteChange={this.onRouteChange} />
+            <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
           </div>
         );
     }
