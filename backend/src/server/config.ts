@@ -5,8 +5,6 @@ const serverPort = 8000;
 
 const app = express();
 
-
-
 const whitelist = ["http://localhost:3000"];
 let corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -25,8 +23,6 @@ app.options("*", cors(corsOptions));
 app.all("*", cors(corsOptions), (req: any, res: any, next: () => void) => {
   next();
 });
-
-
 
 app.use(express.json());
 // app.use(express.static(__dirname + "/public"))

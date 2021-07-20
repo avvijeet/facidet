@@ -1,12 +1,12 @@
-import knex from 'knex';
+import knex from "knex";
 const database = knex({
-  client: 'pg',
+  client: "pg",
   connection: {
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'facidet'
-  }
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "facidet",
+  },
 });
 
 // const database = {

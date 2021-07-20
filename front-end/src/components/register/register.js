@@ -32,7 +32,6 @@ class Register extends Component {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         if (response.success === true) {
           this.setState({isSignedIn: true})
           this.props.loadUser(response.data.user);

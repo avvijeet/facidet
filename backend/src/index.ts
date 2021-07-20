@@ -1,5 +1,5 @@
-import {app} from "./server/routes"
-import {serverPort} from "./server/config"
+import { app } from "./server/routes";
+import { serverPort } from "./server/config";
 
 app.listen(serverPort, () => {
   console.log(`App is running on port ${serverPort}`);

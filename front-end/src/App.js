@@ -5,7 +5,6 @@ import Logo from "./components/logo/Logo";
 import ImageLinkForm from "./components/imageLinkForm/imageLinkForm";
 import FaceRecognition from "./components/faceRecognition/faceRecognition";
 import SignIn from "./components/signIn/signIn";
-import { clarifaiApp, Clarifai } from "./components/imageLinkForm/clarifai";
 import Rank from "./components/rank/rank";
 import Register from "./components/register/register";
 import Particles from "react-particles-js";
@@ -22,23 +21,25 @@ const particleOptions = {
     },
   },
 };
+
+const initialState = {
+  input: "",
+  imageUrl: "",
+  box: {},
+  route: "signIn",
+  isSignedIn: false,
+  user: {
+    id: 0,
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  },
+};
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: "",
-      imageUrl: "",
-      box: {},
-      route: "signIn",
-      isSignedIn: false,
-      user: {
-        id: 0,
-        name: "",
-        email: "",
-        entries: 0,
-        joined: "",
-      },
-    };
+    this.state = initialState;
   }
 
   loadUser = (userData) => {
@@ -79,10 +80,16 @@ class App extends Component {
     this.setState({
       imageUrl: this.state.input,
     });
-    clarifaiApp.models
-      .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    fetch(`${backendUrl}/detect`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        input: this.state.input,
+      }),
+    })
+      .then((response) => response.json())
       .then((response) => {
-        if (response) {
+        if (response.success === true) {
           fetch(`${backendUrl}/image`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -93,11 +100,19 @@ class App extends Component {
             .then((response) => response.json())
             .then((response) => {
               if (response.success === true) {
-                this.setState(Object.assign(this.state.user, { entries: response.data.entries }));
+                this.setState(
+                  Object.assign(this.state.user, {
+                    entries: response.data.entries,
+                  })
+                );
               }
-            });
+            })
+            .catch(console.log);
+
+          this.displayFaceBox(this.calculateFaceLocation(response.data));
+        } else {
+          console.log(response);
         }
-        this.displayFaceBox(this.calculateFaceLocation(response));
       })
       .catch((err) => console.error(err));
   };
@@ -108,7 +123,7 @@ class App extends Component {
         this.setState({ isSignedIn: true });
         break;
       case "signOut":
-        this.setState({ isSignedIn: false });
+        this.setState(initialState);
         break;
       default:
         break;
@@ -160,7 +175,10 @@ class App extends Component {
       default:
         return (
           <div>
-            <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+            <SignIn
+              loadUser={this.loadUser}
+              onRouteChange={this.onRouteChange}
+            />
           </div>
         );
     }
