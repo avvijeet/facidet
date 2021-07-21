@@ -33,13 +33,14 @@ class Register extends Component {
       .then((response) => response.json())
       .then((response) => {
         if (response.success === true) {
-          this.setState({isSignedIn: true})
+          this.setState({ isSignedIn: true });
           this.props.loadUser(response.data.user);
           this.props.onRouteChange("home");
         } else {
           this.props.onRouteChange("register");
         }
-      });
+      })
+      .catch(console.log);
   };
 
   render() {
