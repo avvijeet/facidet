@@ -1,3 +1,3 @@
-const backendUrl = "facidet-backend.herokuapp.com";
+const backendUrl = "https://facidet-backend.herokuapp.com";
 
-export {backendUrl}
+export { backendUrl };

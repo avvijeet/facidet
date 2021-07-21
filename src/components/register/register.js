@@ -40,7 +40,7 @@ class Register extends Component {
           this.props.onRouteChange("register");
         }
       })
-      .catch(console.log);
+      .catch(console.error);
   };
 
   render() {
